@@ -1,8 +1,23 @@
-<h3>Autodetails</h3>
+<div class="row">
+  <div class="col">
+    <h3 *ngIf="viewstate == 'details'">Details</h3>
+    <h3 *ngIf="viewstate == 'edit'">Editieren</h3>
+    <h3 *ngIf="viewstate == 'new'">Neue anlegen</h3>
+  </div>
+  <div class="col">
+    <a
+      *ngIf="viewstate != 'new'"
+      routerLink="/autos/0"
+      [queryParams]="{ viewstate: 'new' }"
+      (click)="selectAction('new')"
+      >Neuen&nbsp;Datensatz&nbsp;anlegen</a
+    >
+  </div>
+</div>
 
 <p *ngIf="!auto"><em>Loading...</em></p>
 
-<div id="autodetails" *ngIf="!editmodus">
+<div id="autodetails" *ngIf="viewstate == 'details'">
   <table *ngIf="auto" class="table table-striped" id="autoliste">
     <tbody>
       <tr>
@@ -47,15 +62,12 @@
       </button>
     </div>
     <div class="col">
-      <button
-        type="button"
-        class="btn btn-success"
+      <a
         routerLink="/autos/{{ auto.ID }}"
         [queryParams]="{ viewstate: 'edit' }"
-        (click)="toggleViewState()"
+        (click)="selectAction('edit')"
+        >Zum Editieren</a
       >
-        Zum Editieren
-      </button>
     </div>
   </div>
 </div>
@@ -134,16 +146,33 @@
         Zurück
       </button>
     </div>
+
     <div class="col">
       <button
         type="button"
-        class="btn btn-warning"
+        class="btn btn-success"
         routerLink="/autos/{{ auto.ID }}"
         [queryParams]="{ viewstate: 'details' }"
-        (click)="toggleViewState()"
+        (click)="selectAction('save')"
       >
-        Zur Detailansicht
+        Speichern
       </button>
     </div>
+    <div class="col">
+      <a
+        *ngIf="viewstate != 'new'"
+        routerLink="/autos/{{ auto.ID }}"
+        [queryParams]="{ viewstate: 'details' }"
+        (click)="selectAction('details')"
+        >Zur Detailansicht</a
+      >
+    </div>
   </div>
+</div>
+
+<div *ngIf="message" class="alert alert-success mt-3" role="alert">
+  {{ message }}
+</div>
+<div *ngIf="errorMessage" class="alert alert-danger mt-3" role="alert">
+  {{ errorMessage }}
 </div>
