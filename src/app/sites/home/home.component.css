@@ -1,0 +1,9 @@
+/* #home {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border: 1px dashed red;
+}
+#home * {
+  flex: auto;
+} */

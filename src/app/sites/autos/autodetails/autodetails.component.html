@@ -1,0 +1,149 @@
+<h3>Autodetails</h3>
+
+<p *ngIf="!auto"><em>Loading...</em></p>
+
+<div id="autodetails" *ngIf="!editmodus">
+  <table *ngIf="auto" class="table table-striped" id="autoliste">
+    <tbody>
+      <tr>
+        <th>ID</th>
+        <td>{{ auto.ID }}</td>
+      </tr>
+      <tr>
+        <th>Marke</th>
+        <td>{{ auto.Marke }}</td>
+      </tr>
+      <tr>
+        <th>Modell</th>
+        <td [innerHTML]="auto.Modell"></td>
+      </tr>
+      <tr>
+        <th>Fahrgestellnummer</th>
+        <td>{{ auto.Fahrgestellnummer }}</td>
+      </tr>
+      <tr>
+        <th>KundenID</th>
+        <td>{{ auto.KundenID }}</td>
+      </tr>
+      <tr>
+        <th>HaendlerID</th>
+        <td>{{ auto.HaendlerID }}</td>
+      </tr>
+      <tr>
+        <th>Erstzulassung</th>
+        <td>{{ auto.Erstzulassung }}</td>
+      </tr>
+      <tr>
+        <th>ErstKennzeichen</th>
+        <td>{{ auto.ErstKennzeichen }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="row" style="max-width:700px">
+    <div class="col">
+      <button type="button" class="btn btn-primary" routerLink="/autos">
+        Zurück
+      </button>
+    </div>
+    <div class="col">
+      <button
+        type="button"
+        class="btn btn-success"
+        routerLink="/autos/{{ auto.ID }}"
+        [queryParams]="{ viewstate: 'edit' }"
+        (click)="toggleViewState()"
+      >
+        Zum Editieren
+      </button>
+    </div>
+  </div>
+</div>
+
+<div id="autoeditieren" *ngIf="editmodus">
+  <table *ngIf="auto" class="table table-striped" id="autoliste">
+    <tbody>
+      <tr>
+        <th class="editlabel">ID</th>
+        <td>{{ auto.ID }}</td>
+      </tr>
+      <tr>
+        <th>Marke</th>
+        <td>
+          <input type="text" class="form-control" [(ngModel)]="auto.Marke" />
+        </td>
+      </tr>
+      <tr>
+        <th>Modell</th>
+        <td>
+          <input type="text" class="form-control" [(ngModel)]="auto.Modell" />
+        </td>
+      </tr>
+      <tr>
+        <th>Fahrgestellnummer</th>
+        <td>
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="auto.Fahrgestellnummer"
+          />
+        </td>
+      </tr>
+      <tr>
+        <th>KundenID</th>
+        <td>
+          <input type="text" class="form-control" [(ngModel)]="auto.KundenID" />
+        </td>
+      </tr>
+      <tr>
+        <th>HaendlerID</th>
+        <td>
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="auto.HaendlerID"
+          />
+        </td>
+      </tr>
+      <tr>
+        <th>Erstzulassung</th>
+        <td>
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="auto.Erstzulassung"
+          />
+        </td>
+      </tr>
+      <tr>
+        <th>ErstKennzeichen</th>
+        <td>
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="auto.ErstKennzeichen"
+          />
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="row" style="max-width:700px">
+    <div class="col">
+      <button type="button" class="btn btn-primary" routerLink="/autos">
+        Zurück
+      </button>
+    </div>
+    <div class="col">
+      <button
+        type="button"
+        class="btn btn-warning"
+        routerLink="/autos/{{ auto.ID }}"
+        [queryParams]="{ viewstate: 'details' }"
+        (click)="toggleViewState()"
+      >
+        Zur Detailansicht
+      </button>
+    </div>
+  </div>
+</div>
