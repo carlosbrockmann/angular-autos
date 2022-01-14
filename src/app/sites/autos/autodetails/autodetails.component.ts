@@ -22,35 +22,33 @@ export class AutodetailsComponent implements OnInit {
     var selID: string = this.route.snapshot.paramMap.get('ID');
     if (selID && !isNaN(selID as any)) this.selectedId = parseInt(selID);
 
-    var autos = GlobalConstants.CarList.filter((c) => c.ID == this.selectedId);
-    if (autos.length > 0) this.auto = autos[0];
-    if (autos.length == 0) {
-      this.auto = {} as CARS;
-    }
-
     let view = this.route.snapshot.queryParamMap.get('viewstate') || 'details';
     this.selectAction(view);
   }
 
-  toggleViewState(): void {
-    if (this.editmodus) {
-      this.viewstate = 'details';
-      this.editmodus = false;
-    } else {
-      this.viewstate = 'edit';
-      this.editmodus = true;
+  autoLaden() {
+    var autos = GlobalConstants.CarList.filter((c) => c.ID == this.selectedId);
+
+    if (autos.length > 0) {
+      this.auto = { ...autos[0] };
+    }
+    if (autos.length == 0) {
+      this.auto = {} as CARS;
     }
   }
 
   selectAction(action: string) {
     this.message = '';
     this.errorMessage = '';
+
     if (!action) action = 'details';
     if (action == 'details') {
+      this.autoLaden();
       this.viewstate = 'details';
       this.editmodus = false;
     }
     if (action == 'edit') {
+      if (!this.auto) this.autoLaden();
       this.viewstate = 'edit';
       this.editmodus = true;
     }
@@ -63,6 +61,7 @@ export class AutodetailsComponent implements OnInit {
     if (action == 'save') {
       var isNew: boolean = false;
       var tmp = GlobalConstants.CarList.filter((c) => c.ID == this.auto.ID);
+      console.log(this.auto);
       if (this.auto.Marke) {
         if (tmp.length == 0) {
           GlobalConstants.CarList.push(this.auto);
@@ -71,6 +70,13 @@ export class AutodetailsComponent implements OnInit {
           this.message = 'Datensatz hinzugefügt!';
         }
         if (tmp.length > 0) {
+          GlobalConstants.CarList = GlobalConstants.CarList.filter(
+            (c) => c.ID != this.auto.ID
+          );
+          GlobalConstants.CarList.push(this.auto);
+          GlobalConstants.CarList = GlobalConstants.CarList.sort((a, b) =>
+            a.ID < b.ID ? -1 : a.ID > b.ID ? 1 : 0
+          );
           this.viewstate = 'details';
           this.editmodus = false;
           this.message = 'Datensatz gespeichert!';
